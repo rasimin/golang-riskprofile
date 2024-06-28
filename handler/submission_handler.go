@@ -22,6 +22,7 @@ type IsubmissionHandler interface {
 	GetSubmi(c *gin.Context)
 	// UpdateSubmi(c *gin.Context)
 	// UpdateUser(c *gin.Context)
+	GetUSubmiByUserID(c *gin.Context)
 	DeleteSubmi(c *gin.Context)
 	GetAllSubmi(c *gin.Context)
 }
@@ -80,6 +81,22 @@ func (h *submissionHandler) GetSubmi(c *gin.Context) {
 	}
 
 	user, err := h.submissionService.GetUSubmiByID(c.Request.Context(), id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "subs not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, user)
+}
+
+func (h *submissionHandler) GetUSubmiByUserID(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("user_id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID"})
+		return
+	}
+	print(id)
+	user, err := h.submissionService.GetUSubmiByUserID(c.Request.Context(), id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "subs not found"})
 		return

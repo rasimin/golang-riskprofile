@@ -10,6 +10,7 @@ import (
 type IsubmissionService interface {
 	CreateSubmi(ctx context.Context, user *entity.Submission) (entity.Submission, error)
 	GetUSubmiByID(ctx context.Context, id int) (entity.Submission, error)
+	GetUSubmiByUserID(ctx context.Context, id int) (entity.Submission, error)
 	// 	GetUserByEmail(ctx context.Context, id string) (entity.User, error)
 	// UpdateSubmi(ctx context.Context, id int, user entity.Submission) (entity.Submission, error)
 	DeleteSubmi(ctx context.Context, id int) error
@@ -20,6 +21,7 @@ type IsubmissionService interface {
 type IsubmissionRepository interface {
 	CreateSubmi(ctx context.Context, user *entity.Submission) (entity.Submission, error)
 	GetUSubmiByID(ctx context.Context, id int) (entity.Submission, error)
+	GetUSubmiByUserID(ctx context.Context, id int) (entity.Submission, error)
 	// GetUserByEmail(ctx context.Context, id string) (entity.User, error)
 	// UpdateSubmi(ctx context.Context, id int, user entity.Submission) (entity.Submission, error)
 	DeleteSubmi(ctx context.Context, id int) error
@@ -51,6 +53,17 @@ func (s *submissionService) GetUSubmiByID(ctx context.Context, id int) (entity.S
 
 	// Memanggil GetUserByID dari repository untuk mendapatkan pengguna berdasarkan ID
 	user, err := s.submissionRepo.GetUSubmiByID(ctx, id)
+	if err != nil {
+		return entity.Submission{}, fmt.Errorf("gagal mendapatkan pengguna berdasarkan ID: %v", err)
+	}
+	return user, nil
+}
+
+// GetUserByID mendapatkan pengguna berdasarkan ID
+func (s *submissionService) GetUSubmiByUserID(ctx context.Context, id int) (entity.Submission, error) {
+
+	// Memanggil GetUserByID dari repository untuk mendapatkan pengguna berdasarkan ID
+	user, err := s.submissionRepo.GetUSubmiByUserID(ctx, id)
 	if err != nil {
 		return entity.Submission{}, fmt.Errorf("gagal mendapatkan pengguna berdasarkan ID: %v", err)
 	}

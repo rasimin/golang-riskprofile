@@ -40,6 +40,7 @@ func SetupRouter(r *gin.Engine, userHandler handler.IUserHandler, submissionHand
 	subsPrivateEndpoint.GET("/:id", submissionHandlerHandler.GetSubmi)
 	subsPrivateEndpoint.GET("/", submissionHandlerHandler.GetAllSubmi)
 	subsPrivateEndpoint.DELETE("/:id", submissionHandlerHandler.DeleteSubmi)
+	subsPrivateEndpoint.GET("/user_id/:user_id", submissionHandlerHandler.GetUSubmiByUserID)
 
 	// subsPrivateEndpoint.PUT("/:id", submissionHandlerHandler.UpdateSubmi)
 	// subsPrivateEndpoint.PUT("/:id", submissionHandlerHandler.)
