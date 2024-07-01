@@ -54,6 +54,19 @@ func (r *submissionRepository) GetUSubmiByID(ctx context.Context, id int) (entit
 	return user, nil
 }
 
+func (r *submissionRepository) GetUSubmiByUserID(ctx context.Context, id int) (entity.Submission, error) {
+	var user entity.Submission
+	if err := r.db.WithContext(ctx).Select("id", "user_id", "answers", "risk_score", "risk_category", "created_at", "updated_at").Where("user_id = ?", id).First(&user).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return entity.Submission{}, nil
+		}
+
+		log.Printf("Error getting user by ID: %v\n", err)
+		return entity.Submission{}, err
+	}
+	return user, nil
+}
+
 // // GetUserByEmail mengambil pengguna berdasarkan email
 // func (r *userRepository) GetUserByEmail(ctx context.Context, email string) (entity.User, error) {
 // 	var user entity.User
